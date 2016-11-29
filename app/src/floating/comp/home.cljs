@@ -5,7 +5,8 @@
             [respo.comp.space :refer [comp-space]]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
-            [floating.comp.login :refer [comp-login]]))
+            [floating.comp.login :refer [comp-login]]
+            [floating.comp.draft :refer [comp-draft]]))
 
 (defn on-log-out [e dispatch!] (dispatch! :user/log-out nil))
 
@@ -25,13 +26,17 @@
      (comp-space 8 nil)
      (if (:logged-in? store)
        (let [router (get-in store [:state :router])]
-         (if (= (:name router) :topic)
-           nil
-           (div
-            {:style ui/flex}
-            (comp-text (str "Hello! " (get-in store [:user :name])) nil)
-            (comp-space 8 nil)
-            (a {:style style-trigger, :event {:click on-log-out}} (comp-text "Log out" nil)))))
+         (case (:name router)
+           :profile
+             (div
+              {:style ui/flex}
+              (comp-text (str "Hello! " (get-in store [:user :name])) nil)
+              (comp-space 8 nil)
+              (a
+               {:style style-trigger, :event {:click on-log-out}}
+               (comp-text "Log out" nil)))
+           :add (comp-draft)
+           nil))
        (comp-login)))))
 
 (def comp-home (create-comp :home render))
