@@ -5,9 +5,7 @@
             [respo.comp.space :refer [comp-space]]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
-            [floating.comp.topics :refer [comp-topics]]
-            [floating.comp.login :refer [comp-login]]
-            [floating.comp.room :refer [comp-room]]))
+            [floating.comp.login :refer [comp-login]]))
 
 (defn on-log-out [e dispatch!] (dispatch! :user/log-out nil))
 
@@ -24,12 +22,11 @@
   (fn [state mutate!]
     (div
      {:style (merge ui/row style-container)}
-     (comp-topics (:topics store) (:logged-in? store))
      (comp-space 8 nil)
      (if (:logged-in? store)
        (let [router (get-in store [:state :router])]
          (if (= (:name router) :topic)
-           (comp-room (:seeing-messages store) (:data router))
+           nil
            (div
             {:style ui/flex}
             (comp-text (str "Hello! " (get-in store [:user :name])) nil)
