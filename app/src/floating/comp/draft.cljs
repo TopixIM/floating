@@ -9,8 +9,7 @@
 
 (defn update-state [state text] text)
 
-(defn on-send [text mutate!]
-  (fn [e dispatch!] (dispatch! :message/create text) (mutate! "")))
+(defn on-send [text mutate!] (fn [e dispatch!] (dispatch! :message/add text) (mutate! "")))
 
 (def style-toolbar {:justify-content :flex-end})
 

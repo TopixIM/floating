@@ -27,7 +27,7 @@
     (go-loop
      []
      (let [[op op-data state-id op-id op-time] (<! server-ch)]
-       (println "Action:" op op-data state-id op-id op-time)
+       (println "Action:" op (pr-str op-data) state-id op-id op-time)
        (comment println "Database:" @writer-db-ref)
        (try
         (let [new-db (updater @writer-db-ref op op-data state-id op-id op-time)]

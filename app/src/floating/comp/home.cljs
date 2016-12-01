@@ -6,9 +6,13 @@
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
             [floating.comp.login :refer [comp-login]]
-            [floating.comp.draft :refer [comp-draft]]))
+            [floating.comp.draft :refer [comp-draft]]
+            [floating.comp.message :refer [comp-message]]))
 
 (defn on-log-out [e dispatch!] (dispatch! :user/log-out nil))
+
+(defn render-message-list [messages]
+  (div {} (->> messages (map (fn [message] [(:id message) (comp-message message)])))))
 
 (def style-trigger
   {:color :white,
@@ -35,6 +39,8 @@
               (a
                {:style style-trigger, :event {:click on-log-out}}
                (comp-text "Log out" nil)))
+           :hot (div {} (div {}) (render-message-list (:messages store)))
+           :new (div {} (div {}) (render-message-list (:messages store)))
            :add (comp-draft)
            nil))
        (comp-login)))))
