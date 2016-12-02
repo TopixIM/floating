@@ -15,4 +15,5 @@
     :state/remove-notification (state/remove-notification db op-data state-id op-id op-time)
     :router/change (router/change db op-data state-id op-id op-time)
     :message/add (message/add-one db op-data state-id op-id op-time)
+    :message/vote (message/vote db op-data state-id op-id op-time)
     (do (println "Unkown op:" op) db)))

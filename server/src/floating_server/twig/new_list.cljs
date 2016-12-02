@@ -4,4 +4,10 @@
 (def twig-new-list
   (create-twig
    :new-list
-   (fn [messages] (take 20 (sort (fn [a b] (compare (:time a) (:time b))) (vals messages))))))
+   (fn [messages users]
+     (->> (vals messages)
+          (sort (fn [a b] (compare (:time b) (:time a))))
+          (take 20)
+          (map
+           (fn [message]
+             (let [user (get users (:author-id message))] (assoc message :user user))))))))

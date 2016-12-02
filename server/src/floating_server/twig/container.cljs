@@ -14,7 +14,7 @@
         :logged-in? logged-in?,
         :statistics {:count (count (:messages db))},
         :messages (case (:name router)
-          :new (twig-new-list (:messages db))
-          :hot (twig-hot-list (:messages db))
+          :new (twig-new-list (:messages db) (:users db))
+          :hot (twig-hot-list (:messages db) (:users db))
           nil),
         :user (if logged-in? (twig-user (get-in db [:users (:user-id state)])) nil)}))))
