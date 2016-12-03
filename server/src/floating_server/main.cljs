@@ -23,7 +23,7 @@
 
 (defn -main []
   (nodejs/enable-util-print!)
-  (let [server-ch (run-server! {:port 5021})]
+  (let [server-ch (run-server! {:port 5023})]
     (go-loop
      []
      (let [[op op-data state-id op-id op-time] (<! server-ch)]

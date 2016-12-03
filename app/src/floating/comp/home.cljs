@@ -7,12 +7,19 @@
             [respo-ui.style.colors :as colors]
             [floating.comp.login :refer [comp-login]]
             [floating.comp.draft :refer [comp-draft]]
-            [floating.comp.message :refer [comp-message]]))
+            [floating.comp.message :refer [comp-message]]
+            [floating.comp.msg-reader :refer [comp-msg-reader]]))
+
+(def style-title {:font-size 20, :font-weight 300, :font-family "Josefin Sans"})
 
 (defn on-log-out [e dispatch!] (dispatch! :user/log-out nil))
 
+(def style-empty {:color colors/texture-light})
+
 (defn render-message-list [messages]
-  (div {} (->> messages (map (fn [message] [(:id message) (comp-message message)])))))
+  (if (empty? messages)
+    (div {:style style-empty, comp-text "List is empty."})
+    (div {} (->> messages (map (fn [message] [(:id message) (comp-message message)]))))))
 
 (def style-trigger
   {:color :white,
@@ -39,8 +46,17 @@
               (a
                {:style style-trigger, :event {:click on-log-out}}
                (comp-text "Log out" nil)))
-           :hot (div {} (div {}) (render-message-list (:messages store)))
-           :new (div {} (div {}) (render-message-list (:messages store)))
+           :hot
+             (div
+              {}
+              (div {:style style-title} (comp-text "Hot" nil))
+              (render-message-list (:messages store)))
+           :new
+             (div
+              {}
+              (div {:style style-title} (comp-text "New" nil))
+              (render-message-list (:messages store)))
+           :reader (div {} (div {}) (comp-msg-reader (:data store)))
            :add (comp-draft)
            nil))
        (comp-login)))))

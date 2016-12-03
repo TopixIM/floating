@@ -1,5 +1,5 @@
 
-(ns floating.comp.message
+(ns floating.comp.msg-reader
   (:require [respo.alias :refer [create-comp div input button]]
             [respo.comp.text :refer [comp-text]]
             [respo.comp.space :refer [comp-space]]
@@ -10,11 +10,7 @@
 
 (defn on-score [message-id] (fn [e dispatch!] (dispatch! :message/vote message-id)))
 
-(defn on-read [msg-id]
-  (fn [e dispatch!]
-    (dispatch!
-     :router/change
-     {:router nil, :name :reader, :title "Message reader", :data msg-id})))
+(def style-title {:font-size 20, :font-weight 300, :font-family "Josefin Sans"})
 
 (def style-score
   {:color :white,
@@ -27,18 +23,21 @@
 (defn render [message]
   (fn [state mutate!]
     (div
-     {:style ui/row, :event {:click (on-read (:id message))}}
+     {}
+     (div {:style style-title} (comp-text "Reading a single message"))
      (div
-      {:style (merge ui/center style-score), :event {:click (on-score (:id message))}}
-      (comp-text (:score message) nil))
-     (comp-space 16 nil)
-     (div
-      {}
-      (div {} (comp-text (:text message) nil))
+      {:style ui/row}
+      (div
+       {:style (merge ui/center style-score), :event {:click (on-score (:id message))}}
+       (comp-text (:score message) nil))
+      (comp-space 16 nil)
       (div
        {}
-       (comp-text (get-in message [:user :name]) nil)
-       (comp-space 8 nil)
-       (comp-time (:time message)))))))
+       (div {} (comp-text (:text message) nil))
+       (div
+        {}
+        (comp-text (get-in message [:user :name]) nil)
+        (comp-space 8 nil)
+        (comp-time (:time message))))))))
 
-(def comp-message (create-comp :message render))
+(def comp-msg-reader (create-comp :msg-reader render))

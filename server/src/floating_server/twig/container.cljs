@@ -17,4 +17,9 @@
           :new (twig-new-list (:messages db) (:users db))
           :hot (twig-hot-list (:messages db) (:users db))
           nil),
-        :user (if logged-in? (twig-user (get-in db [:users (:user-id state)])) nil)}))))
+        :user (if logged-in? (twig-user (get-in db [:users (:user-id state)])) nil),
+        :data (case (:name router)
+          :reader
+            (let [message (get-in db [:messages (:data router)])]
+              (assoc message :user (get-in db [:users (:author-id message)])))
+          nil)}))))

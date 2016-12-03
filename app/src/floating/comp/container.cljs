@@ -53,7 +53,7 @@
          (div {:style style-pointer, :event {:click on-profile}} (comp-text "Me" nil)))
         (div {} (comp-text "Guest" nil))))
      (div {:style style-body} (comp-home store))
-     (comment comp-debug store {:bottom 0, :max-width "100%", :left 0})
+     (comp-debug store {:bottom 0, :max-width "100%", :left 0})
      (comp-msg-list (get-in store [:state :notifications]) :state/remove-notification))))
 
 (def comp-container (create-comp :container render))
